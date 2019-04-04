@@ -6,7 +6,7 @@
 #    By: cseguier <cseguier@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2019/03/04 13:00:08 by cseguier          #+#    #+#              #
-#    Updated: 2019/03/14 16:18:38 by cseguier         ###   ########.fr        #
+#    Updated: 2019/04/04 14:10:40 by cseguier         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -14,7 +14,7 @@ NAME = fdf
 
 LIBFT = libft/libft.a
 
-FILE = main.c parser.c
+FILE = main.c parser.c drawing.c
 
 INC = -I libft -I /usr/local/include/mlx.h
 MLX = -lmlx -framework OpenGL -framework AppKit

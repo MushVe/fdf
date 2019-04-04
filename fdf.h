@@ -6,7 +6,7 @@
 /*   By: cseguier <cseguier@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/03/05 16:28:48 by cseguier          #+#    #+#             */
-/*   Updated: 2019/04/03 18:42:40 by cseguier         ###   ########.fr       */
+/*   Updated: 2019/04/04 15:16:01 by cseguier         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,12 +28,12 @@ typedef struct	s_param
 	int		x2;
 	int		y2;
 
-	int dx;
-	int dy;
-	int x_i;
-	int y_i;
-	int cpt;
-	int incr;
+	int		dx;
+	int		dy;
+	int		x_i;
+	int		y_i;
+	int		cpt;
+	int		incr;
 
 	int		lenx;
 	int		leny;
@@ -51,8 +51,10 @@ typedef struct	s_param
 	void	*win_ptr;
 }				t_param;
 
-void	put_exit(char *msg);
-char	*parser(char *name, t_param *param);
-int		*get_map_info(char *map, t_param *param);
+void			put_exit(char *msg);
+char			*parser(char *name, t_param *param);
+int				*get_map_info(char *map, t_param *param);
+void			bresenham(t_param *p);
+void			grid(t_param *p, int i, int mapx, int mapy);
 
 #endif
