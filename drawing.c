@@ -6,7 +6,7 @@
 /*   By: cseguier <cseguier@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/04 13:50:10 by cseguier          #+#    #+#             */
-/*   Updated: 2019/04/04 15:14:11 by cseguier         ###   ########.fr       */
+/*   Updated: 2019/04/09 15:49:24 by cseguier         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,7 +23,7 @@ void	put_data(t_param *p, int incr)
 void	bresx(t_param *p, int i, int x, int y)
 {
 	p->cpt = p->dx / 2;
-	while (++i <= p->dx)
+	while (++i < p->dx)
 	{
 		x += p->x_i;
 		p->cpt += p->dy;
@@ -75,28 +75,29 @@ void	bresenham(t_param *p)
 
 void	grid(t_param *p, int i, int mapx, int mapy)
 {
-	while (++mapy < p->leny)
+	while ((mapx = -1) && ++mapy < p->leny)
 	{
 		while (++mapx < p->lenx)
 		{
 			++i;
-			p->x1 = 350 + (mapx - mapy) * 32;
-			p->y1 = 300 - (p->info[i]) + (mapx + mapy) * 16;
+			p->x1 = p->tx + (mapx - mapy) * p->rx;
+			p->y1 = p->ty - (p->info[i] * p->h) + (mapx + mapy) * p->ry;
 			if (p->x1 <= W_LEN && p->x1 >= 0 && p->y1 <= W_HEI && p->y1 >= 0)
 				put_data(p, ((p->y1 * W_HEI) + p->x1) * 4);
 			if (mapx < p->lenx - 1)
 			{
-				p->x2 = 350 + (mapx - mapy + 1) * 32;
-				p->y2 = 300 - (p->info[i + 1]) + (mapx + mapy + 1) * 16;
+				p->x2 = p->tx + (mapx - mapy + 1) * p->rx;
+				p->y2 = p->ty - (p->info[i + 1] * p->h)
+					+ (mapx + mapy + 1) * p->ry;
 				bresenham(p);
 			}
 			if (mapy < p->leny - 1)
 			{
-				p->x2 = 350 + (mapx - mapy - 1) * 32;
-				p->y2 = 300 - (p->info[i + p->lenx]) + (mapx + mapy + 1) * 16;
+				p->x2 = p->tx + (mapx - mapy - 1) * p->rx;
+				p->y2 = p->ty - (p->info[i + p->lenx] * p->h)
+						+ (mapx + mapy + 1) * p->ry;
 				bresenham(p);
 			}
 		}
-		mapx = -1;
 	}
 }

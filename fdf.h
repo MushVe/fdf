@@ -6,7 +6,7 @@
 /*   By: cseguier <cseguier@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/03/05 16:28:48 by cseguier          #+#    #+#             */
-/*   Updated: 2019/04/04 15:16:01 by cseguier         ###   ########.fr       */
+/*   Updated: 2019/04/09 15:56:50 by cseguier         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,10 +16,17 @@
 # include "libft/libft.h"
 # include <fcntl.h>
 # include <stdlib.h>
+#include <stdio.h>
 # include "minilibx_macos/mlx.h"
 
 # define W_LEN 1000
 # define W_HEI 1000
+
+typedef struct linkedlist 
+{
+	int tab;
+	struct linkedlist *next;
+}linkedlist;
 
 typedef struct	s_param
 {
@@ -27,13 +34,19 @@ typedef struct	s_param
 	int		y1;
 	int		x2;
 	int		y2;
-
+	int		h;
+	int		i_max;
+	int		i_min;
 	int		dx;
 	int		dy;
 	int		x_i;
 	int		y_i;
 	int		cpt;
 	int		incr;
+	int		rx;
+	int		ry;
+	int		tx;
+	int		ty;
 
 	int		lenx;
 	int		leny;
@@ -44,7 +57,7 @@ typedef struct	s_param
 
 	int		bpp;
 	int		size_line;
-	int		endian;
+	int		e;
 
 	void	*img_ptr;
 	void	*mlx_ptr;
@@ -52,9 +65,12 @@ typedef struct	s_param
 }				t_param;
 
 void			put_exit(char *msg);
-char			*parser(char *name, t_param *param);
+void			parser(char *name, t_param *param, linkedlist **list);
 int				*get_map_info(char *map, t_param *param);
 void			bresenham(t_param *p);
 void			grid(t_param *p, int i, int mapx, int mapy);
+int				key_hook(int key, void *p);
+int				expose_hook(t_param *p);
+void 			newNode(int data, linkedlist **list);
 
 #endif

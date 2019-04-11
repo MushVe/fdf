@@ -1,16 +1,43 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   get_next_line_stop_free.c                          :+:      :+:    :+:   */
+/*   get_next_line.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: cseguier <cseguier@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/01/22 16:38:31 by cseguier          #+#    #+#             */
-/*   Updated: 2019/04/09 16:35:35 by cseguier         ###   ########.fr       */
+/*   Updated: 2019/03/14 17:24:17 by cseguier         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "libft.h"
+#include "get_next_line.h"
+
+static char		*join_free(char *s, char *buff)
+{
+	int		i;
+	char	*res;
+	int		ts;
+	int		tbuff;
+
+	i = -1;
+	if (!s || !buff)
+		return (NULL);
+	ts = ft_strlen(s);
+	tbuff = ft_strlen(buff);
+	if (!(res = (char*)ft_memalloc(sizeof(char) * (ts + tbuff + 1))))
+		return (0);
+	while (++i < ts)
+		res[i] = s[i];
+	while (i < ts + tbuff)
+	{
+		res[i] = buff[i - ts];
+		i++;
+	}
+	res[i] = '\0';
+	if (*s)
+		ft_memdel((void*)&s);
+	return (res);
+}
 
 static char		*strc_dup_cpy(char const *src, char c)
 {
@@ -55,13 +82,13 @@ static ssize_t	readfile(char **s, char **line, int fd, char *buff)
 {
 	ssize_t	lu;
 
-	ft_memset(buff, 0, GNL_BUFF_SIZE + 1);
+	ft_memset(buff, 0, BUFF_SIZE + 1);
 	lu = 1;
-	while (0 < (lu = read(fd, buff, GNL_BUFF_SIZE)))
+	while (0 < (lu = read(fd, buff, BUFF_SIZE)))
 	{
-		if (!(*s = ft_strjoin(*s, buff, 1)))
+		if (!(*s = join_free(*s, buff)))
 			return (-1);
-		ft_memset(buff, 0, GNL_BUFF_SIZE + 1);
+		ft_memset(buff, 0, BUFF_SIZE + 1);
 	}
 	if (lu == -1)
 		return (-1);
@@ -77,7 +104,7 @@ static ssize_t	readfile(char **s, char **line, int fd, char *buff)
 int				get_next_line(int const fd, char **line)
 {
 	static char	*s;
-	char		buff[GNL_BUFF_SIZE + 1];
+	char		buff[BUFF_SIZE + 1];
 	ssize_t		lu;
 
 	if (fd < 0 || !line)
