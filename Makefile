@@ -16,13 +16,13 @@ LIBFT = libft/libft.a
 
 FILE = main.c parser.c drawing.c hook.c
 
-INC = -I libft #-I /usr/local/include/mlx.h
-#MLX = -lmlx -framework OpenGL -framework AppKit
+INC = -I libft -I /usr/local/include/mlx.h
+MLX = -lmlx -framework OpenGL -framework AppKit
 
 SRC = $(FILE:%=%)
 OBJ = $(FILE:%.c=objs/%.o)
 
-# FLAG = -Wall -Werror -Wextra
+FLAG = -Wall -Werror -Wextra
 CC = gcc $(FLAG) $(INC)
 
 RM = rm -f
@@ -30,7 +30,7 @@ RM = rm -f
 all: $(NAME)
 
 $(NAME) : $(LIBFT) $(OBJ)
-		@$(CC) -o $@ $(OBJ) -L libft/ -lft  #-L /usr/local/lib/ $(MLX)
+		@$(CC) -o $@ $(OBJ) -L libft/ -lft -L /usr/local/lib/ $(MLX)
 
 $(LIBFT) :
 		@make -C libft/ all

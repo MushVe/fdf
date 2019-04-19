@@ -73,6 +73,23 @@ void	bresenham(t_param *p)
 		bresy(p, -1, x, y);
 }
 
+int		getNode(int	aim, t_param *p)
+{
+	linkedlist	*cpy;
+	int			i;
+
+	(void)aim;
+	cpy = p->first;
+	i = -1;
+	while (++i < aim)
+	{
+//		ft_putnbr(cpy->tab); ft_putendl("");
+		cpy = cpy->next;
+	}
+	ft_putnbr(cpy->tab); ft_putendl("");
+	return (0);
+}
+
 void	grid(t_param *p, int i, int mapx, int mapy)
 {
 	while ((mapx = -1) && ++mapy < p->leny)
@@ -81,20 +98,30 @@ void	grid(t_param *p, int i, int mapx, int mapy)
 		{
 			++i;
 			p->x1 = p->tx + (mapx - mapy) * p->rx;
-			p->y1 = p->ty - (p->info[i] * p->h) + (mapx + mapy) * p->ry;
+			p->y1 = p->ty - 
+				(getNode(i, p) * p->h)
+				//(p->tab[i] * p->h)
+				+ (mapx + mapy) * p->ry;
 			if (p->x1 <= W_LEN && p->x1 >= 0 && p->y1 <= W_HEI && p->y1 >= 0)
 				put_data(p, ((p->y1 * W_HEI) + p->x1) * 4);
 			if (mapx < p->lenx - 1)
 			{
 				p->x2 = p->tx + (mapx - mapy + 1) * p->rx;
-				p->y2 = p->ty - (p->info[i + 1] * p->h)
+				p->y2 = p->ty -
+					//(p->tab[i + i] * p->h)
+					(getNode(i + 1, p) * p->h)
 					+ (mapx + mapy + 1) * p->ry;
 				bresenham(p);
 			}
 			if (mapy < p->leny - 1)
 			{
 				p->x2 = p->tx + (mapx - mapy - 1) * p->rx;
-				p->y2 = p->ty - (p->info[i + p->lenx] * p->h)
+				if ((i + p->lenx) > (p->lenx * p->leny))
+					p->y2 = p->ty + (mapx + mapy + 1) * p->ry;
+				else 
+					p->y2 = p->ty -
+					//(p->tab[i + p->lenx] * p->h)
+					(getNode(i + p->lenx, p) * p->h)
 						+ (mapx + mapy + 1) * p->ry;
 				bresenham(p);
 			}

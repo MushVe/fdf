@@ -16,7 +16,7 @@ int		expose_hook(t_param *p)
 {
 	ft_bzero(p->img_data, W_LEN * W_HEI * p->bpp / 8);
 	grid(p, -1, -1, -1);
-//	mlx_put_image_to_window(p->mlx_ptr, p->win_ptr, p->img_ptr, 0, 0);
+	mlx_put_image_to_window(p->mlx_ptr, p->win_ptr, p->img_ptr, 0, 0);
 	return (0);
 }
 
