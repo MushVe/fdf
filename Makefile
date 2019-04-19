@@ -14,7 +14,7 @@ NAME = fdf
 
 LIBFT = libft/libft.a
 
-FILE = main.c parser.c drawing.c hook.c
+FILE = main.c parser.c drawing.c hook.c node.c
 
 INC = -I libft -I /usr/local/include/mlx.h
 MLX = -lmlx -framework OpenGL -framework AppKit

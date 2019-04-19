@@ -23,72 +23,35 @@ int		no_newline(char *map, t_param *param)
 	return (param->lenx * param->leny);
 }
 
-// int		*get_map_info(t_param *p)
-// {
-// 	// int		i;
-// 	// int		*res;
-// 	// char	**tmp;
-
-// 	int *tab = malloc(sizeof(int) * 9);
-// 	tab[0] = 0;
-// 	tab[1] = 0;
-// 	tab[2] = 0;
-// 	tab[3] = 0;
-// 	tab[4] = 0;
-// 	tab[5] = 1;
-// 	tab[6] = 0;
-// 	tab[7] = 0;
-// 	tab[8] = 0;
-	
-
-// 	// p->len_map = no_newline(map, p);
-// 	// if (!(res = (int*)ft_memalloc(sizeof(int) * (p->len_map + 1))))
-// 	// 	put_exit("get_map_info malloc fail");
-// 	// if (!(tmp = ft_strsplit(map, ' ')))
-// 	// 	put_exit("tmp info split fail");
-// 	// i = -1;
-// 	// while (++i < p->len_map)
-// 	// {
-// 	// 	if (ft_atoi(tmp[i]) > p->i_max)
-// 	// 		p->i_max = ft_atoi(tmp[i]);
-// 	// 	if (ft_atoi(tmp[i]) < p->i_min)
-// 	// 		p->i_min = ft_atoi(tmp[i]);
-// 	// 	res[i] = ft_atoi(tmp[i]);
-// 	// }
-// 	// res[i] = 0;
-// 	// i = -1;
-// //	while (++i < p->len_map)
-// //		ft_memdel((void*)tmp[i]);
-// //	ft_memdel((void*)tmp);
-// 	return (tab);
-// }
-
-int	getNumbers(char *str, linkedlist **list)
+int		get_numbers(char *str, t_linkedlist **list)
 {
 	int i;
-	int numberToGet;
+	int number;
 	int nb_nb;
+	int verif;
 
 	i = 0;
-	numberToGet = 0;
+	verif = 0;
+	number = 0;
 	nb_nb = 0;
-	newNode(ft_atoi(str), list);
-	nb_nb++;
 	while (str[i])
 	{
-		// if non valide, si plusieurs espaces d'afffile
-		if (str[i] == ' ')
+		if ((ft_isdigit(str[i]) || str[i] == '-' || str[i] == '+')
+			&& verif == 0)
 		{
-			numberToGet = ft_atoi(str + i);
+			verif = 1;
+			number = ft_atoi(str + i);
 			nb_nb++;
-			newNode(numberToGet, list);
+			new_node(number, list);
 		}
+		if (str[i] == ' ' || str[i] == '\n')
+			verif = 0;
 		i++;
 	}
 	return (nb_nb);
 }
 
-int isLineValid(char *str)
+int		is_line_valid(char *str)
 {
 	int i;
 
@@ -104,8 +67,7 @@ int isLineValid(char *str)
 	return (1);
 }
 
-
-void	parser(char *name, t_param *p, linkedlist **list)
+void	parser(char *name, t_param *p, t_linkedlist **list)
 {
 	int		fd;
 	char	*line;
@@ -119,11 +81,11 @@ void	parser(char *name, t_param *p, linkedlist **list)
 		put_exit("open error");
 	while (0 < (i = get_next_line(fd, &line)))
 	{
-		if (!isLineValid(line))
+		if (!is_line_valid(line))
 			put_exit("Invalid character in file.");
-	 	p->lenx = getNumbers(line, list);
+		p->lenx = get_numbers(line, list);
 		if (length != 0 && p->lenx != length)
-		 	put_exit("Irregular width in file.");
+			put_exit("Irregular width in file.");
 		length = p->lenx;
 		p->leny++;
 		free(line);

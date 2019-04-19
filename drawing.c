@@ -12,6 +12,21 @@
 
 #include "fdf.h"
 
+/*
+** +++++++[ Gradiant ]++++++++
+** FFDE00	jaune :)	FFDE00
+** E6DB1C				FFC90B
+** CED838				FFB416
+** B6D555				FFA021
+** 9DD271				FF8B2C
+** 85CF8D				FF7637
+** 6DCCAA				FF6242
+** 54C9C6				FF4D4D
+** 3CC6E2				FF3858
+** 24C3FF	bleu/rose	FF2464
+** +++++++++++++++++++++++++++
+*/
+
 void	put_data(t_param *p, int incr)
 {
 	p->img_data[incr] = 0x00;
@@ -73,23 +88,6 @@ void	bresenham(t_param *p)
 		bresy(p, -1, x, y);
 }
 
-int		getNode(int	aim, t_param *p)
-{
-	linkedlist	*cpy;
-	int			i;
-
-	(void)aim;
-	cpy = p->first;
-	i = -1;
-	while (++i < aim)
-	{
-//		ft_putnbr(cpy->tab); ft_putendl("");
-		cpy = cpy->next;
-	}
-	ft_putnbr(cpy->tab); ft_putendl("");
-	return (0);
-}
-
 void	grid(t_param *p, int i, int mapx, int mapy)
 {
 	while ((mapx = -1) && ++mapy < p->leny)
@@ -98,31 +96,21 @@ void	grid(t_param *p, int i, int mapx, int mapy)
 		{
 			++i;
 			p->x1 = p->tx + (mapx - mapy) * p->rx;
-			p->y1 = p->ty - 
-				(getNode(i, p) * p->h)
-				//(p->tab[i] * p->h)
-				+ (mapx + mapy) * p->ry;
+			p->y1 = p->ty - (get_node(i, p) * p->h) + (mapx + mapy) * p->ry;
 			if (p->x1 <= W_LEN && p->x1 >= 0 && p->y1 <= W_HEI && p->y1 >= 0)
 				put_data(p, ((p->y1 * W_HEI) + p->x1) * 4);
 			if (mapx < p->lenx - 1)
 			{
 				p->x2 = p->tx + (mapx - mapy + 1) * p->rx;
-				p->y2 = p->ty -
-					//(p->tab[i + i] * p->h)
-					(getNode(i + 1, p) * p->h)
+				p->y2 = p->ty - (get_node(i + 1, p) * p->h)
 					+ (mapx + mapy + 1) * p->ry;
 				bresenham(p);
 			}
 			if (mapy < p->leny - 1)
 			{
 				p->x2 = p->tx + (mapx - mapy - 1) * p->rx;
-				if ((i + p->lenx) > (p->lenx * p->leny))
-					p->y2 = p->ty + (mapx + mapy + 1) * p->ry;
-				else 
-					p->y2 = p->ty -
-					//(p->tab[i + p->lenx] * p->h)
-					(getNode(i + p->lenx, p) * p->h)
-						+ (mapx + mapy + 1) * p->ry;
+				p->y2 = p->ty - (get_node(i + p->lenx, p) * p->h)
+					+ (mapx + mapy + 1) * p->ry;
 				bresenham(p);
 			}
 		}
